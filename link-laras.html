@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>STARLIKE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Arial Black', sans-serif;
+      color: white;
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+      overflow: hidden;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      position: relative;
+    }
+    .stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .star, .shooting-star {
+      position: absolute;
+      background: white;
+      opacity: 0.8;
+    }
+    .star {
+      border-radius: 50%;
+      animation: twinkle 2s infinite ease-in-out;
+    }
+    .shooting-star {
+      width: 2px;
+      height: 2px;
+      animation: shoot 1.5s linear forwards;
+      background: linear-gradient(90deg, white, rgba(255,255,255,0));
+      opacity: 0.8;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 0.2; }
+    }
+    @keyframes shoot {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-300px, 300px) scale(0.5);
+        opacity: 0;
+      }
+    }
+    .blur-bg {
+      position: absolute;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+      filter: blur(20px);
+      z-index: 0.5;
+      pointer-events: none;
+    }
+    h1 {
+      margin-top: 100px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 72px;
+      font-weight: normal;
+      letter-spacing: 4px;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.2);
+      z-index: 1;
+    }
+    .button {
+      width: 250px;
+      padding: 12px 15px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 20px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+      z-index: 1;
+    }
+    .blue-button {
+      background-color: #0d2545;
+      color: white;
+    }
+    .white-button {
+      background-color: white;
+      color: black;
+      box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+    }
+    .double-buttons {
+      display: flex;
+      gap: 10px;
+      margin: 8px 0;
+      z-index: 1;
+    }
+    .double-buttons .button {
+      flex: 1;
+      width: 120px;
+      padding: 12px 0;
+      border-radius: 20px;
+    }
+    .footer {
+      margin-top: auto;
+      margin-bottom: 20px;
+      z-index: 1;
+    }
+    .footer-button {
+      background-color: white;
+      color: black;
+      border: none;
+      border-radius: 20px;
+      padding: 12px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+    }
+    .estrela-topo {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 100px;
+      z-index: 2;
+      filter: drop-shadow(0 0 5px #fff);
+      animation: estrela-rotacao 40s linear infinite;
+    }
+    .estrela-topo .raio {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 12px;
+      height: 48px;
+      background: linear-gradient(180deg, #fff, #fff9c4);
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+      border-radius: 3px;
+      box-shadow: 0 0 6px 1px #fff8a1;
+      transform-origin: center bottom;
+      opacity: 0.9;
+    }
+    .estrela-topo .raio:nth-child(1) { transform: translate(-50%, -100%) rotate(0deg); }
+    .estrela-topo .raio:nth-child(2) { transform: translate(-50%, -100%) rotate(45deg); }
+    .estrela-topo .raio:nth-child(3) { transform: translate(-50%, -100%) rotate(90deg); }
+    .estrela-topo .raio:nth-child(4) { transform: translate(-50%, -100%) rotate(135deg); }
+    .estrela-topo .raio:nth-child(5) { transform: translate(-50%, -100%) rotate(180deg); }
+    .estrela-topo .raio:nth-child(6) { transform: translate(-50%, -100%) rotate(225deg); }
+    .estrela-topo .raio:nth-child(7) { transform: translate(-50%, -100%) rotate(270deg); }
+    .estrela-topo .raio:nth-child(8) { transform: translate(-50%, -100%) rotate(315deg); }
+    .estrela-topo .centro {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 28px;
+      height: 28px;
+      margin-left: -14px;
+      margin-top: -14px;
+      background: radial-gradient(circle at center, #fff, #fff9a6);
+      border-radius: 50%;
+      box-shadow: 0 0 15px 6px #fff9a6;
+    }
+    @keyframes estrela-rotacao {
+      0% { transform: translateX(-50%) rotate(0deg); }
+      100% { transform: translateX(-50%) rotate(-360deg); }
+    }
+    .table-container {
+      max-width: 480px;
+      margin: 30px auto 0 auto;
+      background-color: #111;
+      padding: 20px;
+      border-radius: 12px;
+      font-family: 'Arial Black', sans-serif;
+      font-size: 18px;
+      color: white;
+      font-weight: 700;
+      z-index: 1;
+      position: relative;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    thead {
+      display: none;
+    }
+    tbody tr {
+      display: flex;
+      justify-content: space-between;
+      padding: 18px 0;
+    }
+    tbody tr:not(:last-child) {
+      margin-bottom: 12px;
+    }
+    tbody td {
+      flex: 1;
+      text-align: left;
+    }
+    tbody td.price {
+      flex: 0 0 auto;
+    }
+    a.price-button {
+      background-color: #003366;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      white-space: nowrap;
+    }
+    a.price-button:hover {
+      background-color: #0055aa;
+    }
+    footer.rodape-imagens {
+      background-color: white;
+      padding: 20px 10px;
+      width: 100%;
+      margin-top: auto;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    footer.rodape-imagens img {
+      height: 40px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  <div class="estrela-topo" aria-label="Estrela animada" role="img">
+    <div class="raio"></div><div class="raio"></div><div class="raio"></div><div class="raio"></div>
+    <div class="raio"></div><div class="raio"></div><div class="raio"></div><div class="raio"></div>
+    <div class="centro"></div>
+  </div>
+  <div class="blur-bg"></div>
+  <h1>STARLIKE</h1>
+  <a href="link-do-login.html"><button class="button blue-button">Obter login</button></a>
+  <div class="table-container">
+    <table>
+      <tbody>
+        <tr>
+          <td>Recarga pay</td>
+          <td class="price"><a href="https://wa.me/5592993423938?text=Ol%C3%A1+me+interesso+em+obter+a+conta+lara" class="price-button">R$100,00</a></td>
+        </tr>
+        <tr>
+          <td>Mercado pago</td>
+          <td class="price"><a href="https://wa.me/5592993423938?text=Ol%C3%A1+me+interesso+em+obter+a+conta+lara" class="price-button">R$100,00</a></td>
+        </tr>
+        <tr>
+          <td>99 pay</td>
+          <td class="price"><a href="https://wa.me/5592993423938?text=Ol%C3%A1+me+interesso+em+obter+a+conta+lara" class="price-button">R$95,00</a></td>
+        </tr>
+        <tr>
+          <td>Infinity pay</td>
+          <td class="price"><a href="https://wa.me/5592993423938?text=Ol%C3%A1+me+interesso+em+obter+a+conta+lara" class="price-button">R$95,00</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="footer">
+    <a href="link-suporte.html"><button class="footer-button">Suporte</button></a>
+  </div>
+  <footer class="rodape-imagens">
+    <img src="vis.png" alt="vis" />
+    <img src="hip.png" alt="hip" />
+    <img src="mas.png" alt="mas" />
+    <img src="ame.png" alt="ame" />
+    <img src="el.png" alt="el" />
+  </footer>
+  <script>
+    const starContainer = document.getElementById('stars');
+    const numStars = 80;
+    for (let i = 0; i < numStars; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = Math.random() * 2 + 1;
+      star.style.width = `${size}px`;
+      star.style.height = `${size}px`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+      starContainer.appendChild(star);
+    }
+    function createShootingStar() {
+      const shootingStar = document.createElement('div');
+      shootingStar.className = 'shooting-star';
+      shootingStar.style.top = `${Math.random() * 80}%`;
+      shootingStar.style.left = `${Math.random() * 100}%`;
+      starContainer.appendChild(shootingStar);
+      setTimeout(() => {
+        shootingStar.remove();
+      }, 1500);
+    }
+    setInterval(() => {
+      createShootingStar();
+    }, 1200);
+  </script>
+</body>
+</html>
